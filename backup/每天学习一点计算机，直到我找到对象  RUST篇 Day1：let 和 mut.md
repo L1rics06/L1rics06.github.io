@@ -1,7 +1,7 @@
 # 每天学习一点计算机，直到我找到对象  RUST篇 Day1：let 和 mut
 
 <!-- cover:start -->
-![cover](https://L1rics06.github.io/covers/001-cover.png)
+![cover](https://raw.githubusercontent.com/L1rics06/L1rics06.github.io/main/static/covers/001-cover.png)
 <!-- cover:end -->
 
 
@@ -165,4 +165,4 @@ fn main() {
 这篇先记到这里。下一篇继续补 Rust 的基本类型，把整数、浮点数、布尔值、字符和类型推断放在一起看。
 
 <!-- codex-gmeek-day: 001 -->
-<!-- ##{"ogImage":"https://L1rics06.github.io/covers/001-cover.png"}## -->
+<!-- ##{"ogImage":"https://raw.githubusercontent.com/L1rics06/L1rics06.github.io/main/static/covers/001-cover.png"}## -->

@@ -22,7 +22,7 @@ tags:
   - Rust
 cover: "/covers/example.png"
 series: "RUST篇"
-day: 4
+day: 4 # 系列挑战文章可填；普通技术文章可以省略
 draft: false
 ---
 ```

@@ -1,0 +1,23 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { formatDate, getPosts, getPostUrl } from "../lib/posts";
+
+const posts = await getPosts();
+---
+
+<BaseLayout title="归档" description="L1rics 的博客文章归档">
+  <section class="page-title">
+    <h1>归档</h1>
+    <p>{posts.length} 篇文章，按时间倒序排列。</p>
+  </section>
+  <ul class="archive-list">
+    {posts.map((post) => (
+      <li>
+        <a href={getPostUrl(post)}>
+          <time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time>
+          <span>{post.data.title}</span>
+        </a>
+      </li>
+    ))}
+  </ul>
+</BaseLayout>

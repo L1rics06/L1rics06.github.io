@@ -1,0 +1,29 @@
+---
+import type { Post } from "../lib/posts";
+import { formatDate, getPostUrl, getReadingStats } from "../lib/posts";
+
+interface Props {
+  post: Post;
+}
+
+const { post } = Astro.props;
+const stats = getReadingStats(post.body ?? "");
+---
+
+<article class="post-card">
+  <a class="post-cover" href={getPostUrl(post)} aria-label={post.data.title}>
+    <img src={post.data.cover} alt="" loading="lazy" />
+  </a>
+  <div class="post-card-body">
+    <div class="post-meta">
+      <span>Day {post.data.day}</span>
+      <span>{formatDate(post.data.date)}</span>
+      <span>{stats.minutes} 分钟</span>
+    </div>
+    <h2><a href={getPostUrl(post)}>{post.data.title}</a></h2>
+    <p>{post.data.description}</p>
+    <div class="tag-row">
+      {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+    </div>
+  </div>
+</article>

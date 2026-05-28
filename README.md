@@ -1,6 +1,30 @@
-# L1rics的blog :link: https://L1rics06.github.io 
-### :page_facing_up: [3](https://L1rics06.github.io/tag.html) 
-### :speech_balloon: 0 
-### :hibiscus: 10480 
-### :alarm_clock: 2026-05-27 19:23:40 
-### Powered by :heart: [Gmeek](https://github.com/Meekdai/Gmeek)
+# L1rics 的 blog
+
+Astro 静态博客，部署到 <https://l1rics06.github.io/>。
+
+## 本地开发
+
+```bash
+npm install
+npm run dev
+```
+
+## 写文章
+
+文章放在 `src/content/posts/`，封面放在 `public/covers/`。每篇文章需要 frontmatter：
+
+```yaml
+---
+title: "文章标题"
+description: "一句话摘要"
+date: 2026-05-28
+tags:
+  - Rust
+cover: "/covers/example.png"
+series: "RUST篇"
+day: 4
+draft: false
+---
+```
+
+推送到 `main` 后，GitHub Actions 会运行检查、构建并部署到 GitHub Pages。

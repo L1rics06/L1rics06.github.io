@@ -1,0 +1,88 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import TableOfContents from "../../components/TableOfContents.astro";
+import Utterances from "../../components/Utterances.astro";
+import { render } from "astro:content";
+import { formatDate, getPosts, getPostSlug, getPostUrl, getReadingStats, getSourceUrl } from "../../lib/posts";
+
+export async function getStaticPaths() {
+  const posts = await getPosts();
+  return posts.map((post, index) => ({
+    params: { slug: getPostSlug(post) },
+    props: {
+      post,
+      previous: posts[index + 1],
+      next: posts[index - 1],
+    },
+  }));
+}
+
+const { post, previous, next } = Astro.props;
+const { Content, headings } = await render(post);
+const stats = getReadingStats(post.body ?? "");
+---
+
+<BaseLayout title={post.data.title} description={post.data.description} image={post.data.cover}>
+  <article>
+    <header class="post-header">
+      <div class="post-meta">
+        <span>{post.data.series}</span>
+        <span>Day {post.data.day}</span>
+        <span>{formatDate(post.data.date)}</span>
+        <span>{stats.words} 字</span>
+        <span>{stats.minutes} 分钟</span>
+      </div>
+      <h1>{post.data.title}</h1>
+      <p>{post.data.description}</p>
+      <div class="tag-row">
+        {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+        <a href={getSourceUrl(post)} target="_blank" rel="noreferrer">源码</a>
+      </div>
+      <img class="post-hero" src={post.data.cover} alt="" />
+    </header>
+
+    <div class="post-layout">
+      <div>
+        <div class="prose">
+          <Content />
+        </div>
+        <nav class="post-nav" aria-label="文章导航">
+          {previous ? (
+            <a href={getPostUrl(previous)}>
+              <span>上一篇</span>
+              <strong>{previous.data.title}</strong>
+            </a>
+          ) : <span></span>}
+          {next ? (
+            <a href={getPostUrl(next)}>
+              <span>下一篇</span>
+              <strong>{next.data.title}</strong>
+            </a>
+          ) : <span></span>}
+        </nav>
+        <Utterances />
+      </div>
+      <TableOfContents headings={headings} />
+    </div>
+  </article>
+
+  <script>
+    document.querySelectorAll("pre").forEach((pre) => {
+      const code = pre.querySelector("code");
+      if (!code) return;
+      const button = document.createElement("button");
+      button.className = "copy-code";
+      button.type = "button";
+      button.setAttribute("aria-label", "复制代码");
+      button.textContent = "⧉";
+      button.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(code.textContent || "");
+        button.textContent = "✓";
+        window.setTimeout(() => {
+          button.textContent = "⧉";
+        }, 1200);
+      });
+      pre.append(button);
+    });
+  </script>
+</BaseLayout>

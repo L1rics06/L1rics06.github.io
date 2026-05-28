@@ -1,0 +1,16 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import { getAllTags, getPosts } from "../../lib/posts";
+
+const tags = getAllTags(await getPosts());
+---
+
+<BaseLayout title="标签" description="按标签浏览 L1rics 的博客文章">
+  <section class="page-title">
+    <h1>标签</h1>
+    <p>用标签把学习路线和主题串起来。</p>
+  </section>
+  <div class="tag-cloud">
+    {tags.map(({ tag, count }) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag} · {count}</a>)}
+  </div>
+</BaseLayout>

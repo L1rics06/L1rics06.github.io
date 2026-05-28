@@ -1,0 +1,21 @@
+---
+import { site } from "../site.config";
+---
+
+<section class="comments" aria-label="评论">
+  <h2>评论</h2>
+  <div id="utterances-root"></div>
+  <script is:inline define:vars={{ repo: site.repo }}>
+    const mount = document.getElementById("utterances-root");
+    if (mount) {
+      const script = document.createElement("script");
+      script.src = "https://utteranc.es/client.js";
+      script.setAttribute("repo", repo);
+      script.setAttribute("issue-term", "pathname");
+      script.setAttribute("theme", "preferred-color-scheme");
+      script.crossOrigin = "anonymous";
+      script.async = true;
+      mount.append(script);
+    }
+  </script>
+</section>

@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PostCard from "../components/PostCard.astro";
+import { site } from "../site.config";
+import { getAllTags, getPosts } from "../lib/posts";
+
+const posts = await getPosts();
+const tags = getAllTags(posts);
+const currentDay = posts.reduce((max, post) => Math.max(max, post.data.day), 0);
+const rustPosts = posts.filter((post) => post.data.series === "RUST篇").length;
+---
+
+<BaseLayout title={site.title} description={site.description}>
+  <section class="hero">
+    <div>
+      <h1><span>每天学习一点计算机，</span><span>直到我找到对象</span></h1>
+      <p>{site.subtitle}。这里记录一条以 Rust 开始的学习路线，每天把一个小问题讲清楚，留下能复习的代码和边界。</p>
+    </div>
+    <div class="status-panel" aria-label="系列状态">
+      <span>当前进度</span>
+      <strong>Day {currentDay}</strong>
+      <span>RUST篇已记录 {rustPosts} 篇 · 共 {posts.length} 篇文章</span>
+      <div class="tag-row">
+        {tags.slice(0, 5).map(({ tag }) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+      </div>
+    </div>
+  </section>
+
+  <section aria-labelledby="latest-posts">
+    <div class="section-head">
+      <div>
+        <h2 id="latest-posts">最新文章</h2>
+        <p>按发布时间倒序，优先展示当前学习主线。</p>
+      </div>
+      <a href="/archive/">查看归档</a>
+    </div>
+    <div class="post-grid">
+      {posts.map((post) => <PostCard post={post} />)}
+    </div>
+  </section>
+</BaseLayout>

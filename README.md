@@ -1,6 +1,6 @@
 # L1rics 的 blog
 
-Astro 静态博客，部署到 <https://l1rics06.github.io/>。
+Astro 静态技术博客，部署到 <https://l1rics06.github.io/>。
 
 ## 本地开发
 
@@ -27,4 +27,4 @@ draft: false
 ---
 ```
 
-推送到 `main` 后，GitHub Actions 会运行检查、构建并部署到 GitHub Pages。
+`series` 用来归类长期主题，例如 `RUST篇`、`Web工程`、`系统折腾`。推送到 `main` 后，GitHub Actions 会运行检查、构建并部署到 GitHub Pages。

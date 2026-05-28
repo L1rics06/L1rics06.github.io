@@ -6,20 +6,27 @@ import { getAllTags, getPosts } from "../lib/posts";
 
 const posts = await getPosts();
 const tags = getAllTags(posts);
-const currentDay = posts.reduce((max, post) => Math.max(max, post.data.day), 0);
-const rustPosts = posts.filter((post) => post.data.series === "RUST篇").length;
+const seriesCounts = posts.reduce((counts, post) => {
+  counts.set(post.data.series, (counts.get(post.data.series) ?? 0) + 1);
+  return counts;
+}, new Map<string, number>());
+const activeSeries = [...seriesCounts.entries()].sort((a, b) => b[1] - a[1])[0];
 ---
 
 <BaseLayout title={site.title} description={site.description}>
   <section class="hero">
     <div>
-      <h1><span>每天学习一点计算机，</span><span>直到我找到对象</span></h1>
-      <p>{site.subtitle}。这里记录一条以 Rust 开始的学习路线，每天把一个小问题讲清楚，留下能复习的代码和边界。</p>
+      <h1><span>L1rics 的</span><span>技术笔记</span></h1>
+      <p>{site.subtitle}。这里放技术学习、工程实践和日常折腾记录；系列文章会按主题长期沉淀，不只服务单个挑战。</p>
     </div>
-    <div class="status-panel" aria-label="系列状态">
-      <span>当前进度</span>
-      <strong>Day {currentDay}</strong>
-      <span>RUST篇已记录 {rustPosts} 篇 · 共 {posts.length} 篇文章</span>
+    <div class="status-panel" aria-label="站点概览">
+      <span>站点概览</span>
+      <strong>{posts.length} 篇文章</strong>
+      <span>
+        {activeSeries ? `${activeSeries[0]} ${activeSeries[1]} 篇` : "还没有系列文章"}
+        {" · "}
+        {tags.length} 个标签
+      </span>
       <div class="tag-row">
         {tags.slice(0, 5).map(({ tag }) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
       </div>
@@ -30,7 +37,7 @@ const rustPosts = posts.filter((post) => post.data.series === "RUST篇").length;
     <div class="section-head">
       <div>
         <h2 id="latest-posts">最新文章</h2>
-        <p>按发布时间倒序，优先展示当前学习主线。</p>
+        <p>按发布时间倒序展示所有技术笔记。</p>
       </div>
       <a href="/archive/">查看归档</a>
     </div>

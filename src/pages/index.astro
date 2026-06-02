@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import PostCard from "../components/PostCard.astro";
 import { site } from "../site.config";
-import { getAllTags, getPosts } from "../lib/posts";
+import { formatDate, getAllTags, getPostUrl, getPosts, getReadingStats } from "../lib/posts";
 
 const posts = await getPosts();
 const tags = getAllTags(posts);
@@ -11,38 +11,129 @@ const seriesCounts = posts.reduce((counts, post) => {
   return counts;
 }, new Map<string, number>());
 const activeSeries = [...seriesCounts.entries()].sort((a, b) => b[1] - a[1])[0];
+const latestPost = posts[0];
+const latestStats = latestPost ? getReadingStats(latestPost.body ?? "") : undefined;
+const totalWords = posts.reduce((total, post) => total + getReadingStats(post.body ?? "").words, 0);
+const filterTags = tags.slice(0, 8);
 ---
 
 <BaseLayout title={site.title} description={site.description}>
-  <section class="hero">
-    <div>
-      <h1><span>L1rics 的</span><span>技术笔记</span></h1>
-      <p>{site.subtitle}。这里放技术学习、工程实践和日常折腾记录；系列文章会按主题长期沉淀，不只服务单个挑战。</p>
-    </div>
-    <div class="status-panel" aria-label="站点概览">
-      <span>站点概览</span>
-      <strong>{posts.length} 篇文章</strong>
-      <span>
-        {activeSeries ? `${activeSeries[0]} ${activeSeries[1]} 篇` : "还没有系列文章"}
-        {" · "}
-        {tags.length} 个标签
-      </span>
-      <div class="tag-row">
-        {tags.slice(0, 5).map(({ tag }) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+  <section class="hero hero-overview">
+    <div class="status-panel overview-panel" aria-label="站点概览">
+      <div class="overview-main">
+        <span class="overview-label">站点概览</span>
+        <strong class="overview-title">{posts.length} 篇文章</strong>
+        <div class="overview-stats">
+          <a class="overview-stat" href="/archive/">
+            <span>归档</span>
+            <strong>{posts.length}</strong>
+          </a>
+          <a class="overview-stat" href="/tags/">
+            <span>标签</span>
+            <strong>{tags.length}</strong>
+          </a>
+          <div class="overview-stat">
+            <span>字数</span>
+            <strong>{totalWords.toLocaleString("zh-CN")}</strong>
+          </div>
+        </div>
+        <div class="overview-actions">
+          <a href="/archive/">归档</a>
+          <a href="/tags/">标签</a>
+          <a href="/rss.xml">RSS</a>
+          <a href={site.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+        </div>
       </div>
+      {latestPost && latestStats && (
+        <a class="latest-preview" href={getPostUrl(latestPost)}>
+          <span>最近更新</span>
+          <strong>{latestPost.data.title}</strong>
+          <p>{latestPost.data.description}</p>
+          <small>
+            {formatDate(latestPost.data.date)}
+            {" · "}
+            {latestPost.data.series}
+            {" · "}
+            {latestStats.minutes} 分钟
+          </small>
+        </a>
+      )}
     </div>
   </section>
 
   <section aria-labelledby="latest-posts">
     <div class="section-head">
       <div>
-        <h2 id="latest-posts">最新文章</h2>
-        <p>按发布时间倒序展示所有技术笔记。</p>
+        <h2 id="latest-posts">文章</h2>
+        <p>{activeSeries ? `${activeSeries[0]} 是当前更新最多的系列。` : "文章会按发布时间倒序展示。"}</p>
       </div>
       <a href="/archive/">查看归档</a>
     </div>
-    <div class="post-grid">
-      {posts.map((post) => <PostCard post={post} />)}
+    <div class="post-tools" aria-label="文章筛选">
+      <label class="search-field">
+        <span class="sr-only">搜索文章</span>
+        <input id="post-search" type="search" placeholder="搜索标题、摘要、标签" autocomplete="off" />
+      </label>
+      <div class="filter-row" aria-label="按标签筛选">
+        <button class="filter-chip" type="button" data-tag="" aria-pressed="true">全部</button>
+        {filterTags.map(({ tag, count }) => (
+          <button class="filter-chip" type="button" data-tag={tag} aria-pressed="false">
+            {tag} {count}
+          </button>
+        ))}
+      </div>
     </div>
+    <div class="post-grid" id="post-grid">
+      {posts.map((post) => (
+        <div
+          class="post-list-item"
+          data-title={post.data.title.toLowerCase()}
+          data-description={post.data.description.toLowerCase()}
+          data-tags={post.data.tags.map((tag) => tag.toLowerCase()).join("|")}
+          data-series={post.data.series.toLowerCase()}
+        >
+          <PostCard post={post} />
+        </div>
+      ))}
+    </div>
+    <p class="empty-state" id="post-empty" hidden>没有匹配的文章</p>
   </section>
+
+  <script>
+    const search = document.querySelector<HTMLInputElement>("#post-search");
+    const chips = [...document.querySelectorAll<HTMLButtonElement>(".filter-chip")];
+    const items = [...document.querySelectorAll<HTMLElement>(".post-list-item")];
+    const empty = document.querySelector<HTMLElement>("#post-empty");
+    let activeTag = "";
+
+    function applyFilters() {
+      const query = search?.value.trim().toLowerCase() ?? "";
+      let visible = 0;
+
+      for (const item of items) {
+        const haystack = [
+          item.dataset.title,
+          item.dataset.description,
+          item.dataset.tags,
+          item.dataset.series,
+        ].join(" ");
+        const matchesQuery = !query || haystack.includes(query);
+        const matchesTag = !activeTag || (item.dataset.tags ?? "").split("|").includes(activeTag);
+        const show = matchesQuery && matchesTag;
+        item.hidden = !show;
+        if (show) visible += 1;
+      }
+
+      if (empty) empty.hidden = visible > 0;
+    }
+
+    search?.addEventListener("input", applyFilters);
+    chips.forEach((chip) => {
+      chip.addEventListener("click", () => {
+        activeTag = chip.dataset.tag?.toLowerCase() ?? "";
+        chips.forEach((item) => item.setAttribute("aria-pressed", String(item === chip)));
+        applyFilters();
+      });
+    });
+  </script>
 </BaseLayout>

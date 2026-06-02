@@ -1,12 +1,12 @@
 ---
-title: "???? heap ???1??????? function ? chunk"
-description: "? malloc/free?brk/sbrk?mmap ? malloc_chunk??????????????????"
+title: "想要成为 heap 高手（1）：内存管理的 function 与 chunk"
+description: "从 malloc/free、brk/sbrk、mmap 到 malloc_chunk，先把堆管理的入口和基本结构串起来。"
 date: 2026-06-02
 tags:
   - pwn
   - heap
 cover: "/covers/heap-001-cover.png"
-series: "???? heap ??"
+series: "想要成为 heap 高手"
 day: 1
 draft: false
 ---

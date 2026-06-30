@@ -1,6 +1,6 @@
 ---
 import type { Post } from "../lib/posts";
-import { formatDate, getPostUrl, getReadingStats } from "../lib/posts";
+import { formatDate, getPostCover, getPostUrl, getReadingStats } from "../lib/posts";
 
 interface Props {
   post: Post;
@@ -8,11 +8,12 @@ interface Props {
 
 const { post } = Astro.props;
 const stats = getReadingStats(post.body ?? "");
+const cover = getPostCover(post);
 ---
 
 <article class="post-card">
   <a class="post-cover" href={getPostUrl(post)} aria-label={post.data.title}>
-    <img src={post.data.cover} alt="" loading="lazy" />
+    <img src={cover} alt="" loading="lazy" />
   </a>
   <div class="post-card-body">
     <div class="post-meta">

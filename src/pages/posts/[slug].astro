@@ -3,7 +3,7 @@ import BaseLayout from "../../layouts/BaseLayout.astro";
 import TableOfContents from "../../components/TableOfContents.astro";
 import Utterances from "../../components/Utterances.astro";
 import { render } from "astro:content";
-import { formatDate, getPosts, getPostSlug, getPostUrl, getReadingStats, getSourceUrl } from "../../lib/posts";
+import { formatDate, getPostCover, getPosts, getPostSlug, getPostUrl, getReadingStats, getSourceUrl } from "../../lib/posts";
 
 export async function getStaticPaths() {
   const posts = await getPosts();
@@ -20,9 +20,10 @@ export async function getStaticPaths() {
 const { post, previous, next } = Astro.props;
 const { Content, headings } = await render(post);
 const stats = getReadingStats(post.body ?? "");
+const cover = getPostCover(post);
 ---
 
-<BaseLayout title={post.data.title} description={post.data.description} image={post.data.cover}>
+<BaseLayout title={post.data.title} description={post.data.description} image={cover}>
   <article>
     <header class="post-header">
       <div class="post-meta">
@@ -37,7 +38,7 @@ const stats = getReadingStats(post.body ?? "");
         {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
         <a href={getSourceUrl(post)} target="_blank" rel="noreferrer">源码</a>
       </div>
-      <img class="post-hero" src={post.data.cover} alt="" />
+      <img class="post-hero" src={cover} alt="" />
     </header>
 
     <div class="post-layout">

@@ -28,7 +28,7 @@ npm run build
 ## 目录说明
 
 - `src/content/posts/`：所有博客文章，Markdown 格式。
-- `public/covers/`：文章封面图，文章 frontmatter 里用 `/covers/xxx.png` 引用。
+- `public/covers/`：自定义文章封面图，文章 frontmatter 里用 `/covers/xxx.png` 引用。
 - `public/images/`：文章正文图片，建议按文章名建子目录，例如 `/images/os-final-review/example.png`。
 - `src/site.config.ts`：站点标题、作者、头像、GitHub 地址等配置。
 - `src/components/`：文章卡片、评论、目录等组件。
@@ -38,7 +38,7 @@ npm run build
 
 1. 在 `src/content/posts/` 下新建一个 `.md` 文件。
 2. 文件名会成为文章 URL，建议使用英文、小写和连字符。
-3. 准备一张封面图放到 `public/covers/`。
+3. 如果需要自定义封面，把封面图放到 `public/covers/`。
 4. 在 Markdown 顶部写 frontmatter。
 5. 正文按普通 Markdown 写即可。
 
@@ -65,7 +65,7 @@ date: 2026-06-30
 tags:
   - Rust
   - 笔记
-cover: "/covers/rust-ownership-notes.png"
+cover: "/covers/rust-ownership-notes.png" # 可选；不填时自动使用正文第一张图
 series: "RUST篇"
 draft: true
 ---
@@ -85,7 +85,7 @@ draft: true
 
 `tags`：可填多个标签。标签会用于首页筛选和 `/tags/` 页面。
 
-`cover`：必填。文章封面路径。图片放在 `public/covers/` 时，路径写 `/covers/文件名`。
+`cover`：可选。文章自定义封面路径。图片放在 `public/covers/` 时，路径写 `/covers/文件名`。如果不填，站点会自动使用正文里的第一张 Markdown 图片或 HTML `<img>` 图片作为封面；如果正文也没有图片，则使用站点头像兜底。
 
 `series`：必填。文章所属系列，会显示在文章元信息里，也用于首页统计当前更新最多的系列。
 
@@ -148,10 +148,13 @@ draft: false
 
 ```bash
 git status
-git add src/content/posts/文章文件名.md public/covers/封面文件名.png
+git add src/content/posts/文章文件名.md
+git add public/covers/封面文件名.png
 git commit -m "Add post: 文章标题"
 git push origin main
 ```
+
+如果没有自定义封面，就不用添加 `public/covers/封面文件名.png`。
 
 推送到 `main` 后，GitHub Actions 会自动执行：
 
@@ -176,7 +179,7 @@ src/content/posts/文章文件名.md
 - 改摘要：修改 `description`。
 - 改发布日期：修改 `date`。注意这会影响首页和归档排序。
 - 改标签：修改 `tags`。
-- 改封面：把新图放到 `public/covers/`，再修改 `cover`。
+- 改封面：把新图放到 `public/covers/`，再修改 `cover`；如果想改为自动封面，就删掉 `cover` 字段，并确保正文第一张图是想要的封面。
 - 改正文：直接修改 frontmatter 下面的 Markdown 内容。
 
 修改后本地验证：

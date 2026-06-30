@@ -1,5 +1,6 @@
 import { getCollection } from "astro:content";
 import type { CollectionEntry } from "astro:content";
+import { site } from "../site.config";
 
 export type Post = CollectionEntry<"posts">;
 
@@ -19,6 +20,31 @@ export function getPostUrl(post: Post) {
 export function getSourceUrl(post: Post) {
   const filename = post.id.endsWith(".md") ? post.id : `${post.id}.md`;
   return `https://github.com/L1rics06/L1rics06.github.io/blob/main/src/content/posts/${filename}`;
+}
+
+export function getPostCover(post: Post) {
+  return post.data.cover ?? getFirstPostImage(post.body ?? "") ?? site.avatarUrl;
+}
+
+function getFirstPostImage(body: string) {
+  const content = body
+    .replace(/```[\s\S]*?```/g, "")
+    .replace(/~~~[\s\S]*?~~~/g, "");
+  const candidates: Array<{ index: number; src: string }> = [];
+
+  const markdownImagePattern = /!\[[^\]]*\]\(\s*(?:<([^>]+)>|([^)\s]+))(?:\s+["'][^"']*["'])?\s*\)/g;
+  for (const match of content.matchAll(markdownImagePattern)) {
+    const src = match[1] ?? match[2];
+    if (src) candidates.push({ index: match.index ?? Number.MAX_SAFE_INTEGER, src });
+  }
+
+  const htmlImagePattern = /<img\b[^>]*\bsrc=["']([^"']+)["'][^>]*>/gi;
+  for (const match of content.matchAll(htmlImagePattern)) {
+    const src = match[1];
+    if (src) candidates.push({ index: match.index ?? Number.MAX_SAFE_INTEGER, src });
+  }
+
+  return candidates.sort((a, b) => a.index - b.index)[0]?.src;
 }
 
 export function getReadingStats(body: string) {

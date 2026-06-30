@@ -1,5 +1,5 @@
 ---
-title: "操作系统期末复习主参考体系"
+title: "操作系统期末复习"
 description: "按老师最新 PPT、往年卷和 Stallings 教材脉络整理的操作系统期末复习重点。"
 date: 2026-06-30
 tags:

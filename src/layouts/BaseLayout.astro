@@ -51,6 +51,10 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
           </span>
         </a>
         <nav class="site-nav" aria-label="主导航">
+          <a href="/">首页</a>
+          <a href="/" title="关于页施工中">关于</a>
+          <a href="/" title="友情链施工中">友情链</a>
+          <a href="/guestbook/">留言</a>
           <a href="/tags/">标签</a>
           <a href="/archive/">归档</a>
           <a href="/rss.xml">RSS</a>
@@ -64,10 +68,13 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
         <slot />
       </main>
       <footer class="site-footer">
-        <span>Copyright © {new Date().getFullYear()} {site.author}</span>
-        <span>Powered by Astro</span>
+        <div class="footer-meta">
+          <span>Copyright © {new Date().getFullYear()} {site.author}</span>
+          <span>Powered by Astro</span>
+        </div>
       </footer>
     </div>
+    <script is:inline async src="https://busuanzi.icodeq.com/busuanzi.pure.mini.js"></script>
     <script>
       const button = document.querySelector<HTMLButtonElement>(".theme-toggle");
       button?.addEventListener("click", () => {

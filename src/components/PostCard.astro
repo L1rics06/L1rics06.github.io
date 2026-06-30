@@ -16,7 +16,7 @@ const stats = getReadingStats(post.body ?? "");
   </a>
   <div class="post-card-body">
     <div class="post-meta">
-      {post.data.day ? <span>Day {post.data.day}</span> : <span>{post.data.series}</span>}
+      <span>{post.data.series}</span>
       <span>{formatDate(post.data.date)}</span>
       <span>{stats.minutes} 分钟</span>
     </div>

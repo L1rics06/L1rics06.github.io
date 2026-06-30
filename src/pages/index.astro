@@ -37,11 +37,19 @@ const filterTags = tags.slice(0, 8);
             <strong>{totalWords.toLocaleString("zh-CN")}</strong>
           </div>
         </div>
-        <div class="overview-actions">
-          <a href="/archive/">归档</a>
-          <a href="/tags/">标签</a>
-          <a href="/rss.xml">RSS</a>
-          <a href={site.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
+        <div class="overview-stats overview-visit-stats" aria-label="访问量统计">
+          <div class="overview-stat" id="busuanzi_container_site_pv">
+            <span>访问量</span>
+            <strong id="busuanzi_value_site_pv">--</strong>
+          </div>
+          <div class="overview-stat" id="busuanzi_container_site_uv">
+            <span>访客</span>
+            <strong id="busuanzi_value_site_uv">--</strong>
+          </div>
+          <div class="overview-stat" id="busuanzi_container_page_pv">
+            <span>本页</span>
+            <strong id="busuanzi_value_page_pv">--</strong>
+          </div>
         </div>
       </div>
       {latestPost && latestStats && (

@@ -6,6 +6,7 @@ export const site = {
   author: "L1rics",
   avatarUrl: "https://avatars.githubusercontent.com/u/202309426?v=4",
   repo: "L1rics06/L1rics06.github.io",
-  githubUrl: "https://github.com/L1rics06/L1rics06.github.io",
+  repoUrl: "https://github.com/L1rics06/L1rics06.github.io",
+  githubUrl: "https://github.com/L1rics06",
   startDate: "2026-05-25",
 };

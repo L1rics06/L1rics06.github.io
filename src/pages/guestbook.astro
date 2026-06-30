@@ -1,0 +1,13 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import Utterances from "../components/Utterances.astro";
+import { site } from "../site.config";
+---
+
+<BaseLayout title="留言" description={`给 ${site.author} 的留言板`}>
+  <section class="page-title guestbook-title">
+    <h1>留言</h1>
+    <p>欢迎留下想法、问题或反馈。</p>
+  </section>
+  <Utterances title="留言板" issueTerm="留言板" />
+</BaseLayout>

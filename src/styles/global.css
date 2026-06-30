@@ -253,11 +253,6 @@ select {
   border-bottom: 1px solid var(--border);
 }
 
-.overview-visit-stats {
-  margin-top: -18px;
-  border-top: 0;
-}
-
 .overview-stat {
   display: grid;
   gap: 4px;

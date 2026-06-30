@@ -24,10 +24,6 @@ const filterTags = tags.slice(0, 8);
         <span class="overview-label">站点概览</span>
         <strong class="overview-title">{posts.length} 篇文章</strong>
         <div class="overview-stats">
-          <a class="overview-stat" href="/archive/">
-            <span>归档</span>
-            <strong>{posts.length}</strong>
-          </a>
           <a class="overview-stat" href="/tags/">
             <span>标签</span>
             <strong>{tags.length}</strong>
@@ -36,19 +32,11 @@ const filterTags = tags.slice(0, 8);
             <span>字数</span>
             <strong>{totalWords.toLocaleString("zh-CN")}</strong>
           </div>
-        </div>
-        <div class="overview-stats overview-visit-stats" aria-label="访问量统计">
-          <div class="overview-stat" id="busuanzi_container_site_pv">
+          <div class="overview-stat">
             <span>访问量</span>
-            <strong id="busuanzi_value_site_pv">--</strong>
-          </div>
-          <div class="overview-stat" id="busuanzi_container_site_uv">
-            <span>访客</span>
-            <strong id="busuanzi_value_site_uv">--</strong>
-          </div>
-          <div class="overview-stat" id="busuanzi_container_page_pv">
-            <span>本页</span>
-            <strong id="busuanzi_value_page_pv">--</strong>
+            <strong id="busuanzi_container_site_pv">
+              <span id="busuanzi_value_site_pv">--</span>
+            </strong>
           </div>
         </div>
       </div>

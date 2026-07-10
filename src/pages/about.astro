@@ -1,0 +1,68 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import { site } from "../site.config";
+---
+
+<BaseLayout title="关于" description="关于 L1rics：一个正在重新出发的网安学生。">
+  <section class="about-hero">
+    <p class="eyebrow">ABOUT / 重新出发</p>
+    <div class="about-hero-grid">
+      <div>
+        <h1>你好，我是<br /><em>L1rics。</em></h1>
+        <p class="about-lead">一个网安专业的学生，平时喜欢自己折腾一些没什么用的小东西。</p>
+      </div>
+      <img class="about-avatar" src={site.avatarUrl} alt="L1rics 的头像" width="180" height="180" />
+    </div>
+  </section>
+
+  <section class="about-story" aria-label="个人介绍">
+    <div class="about-sticky-label">
+      <span>01</span>
+      <strong>一些自白</strong>
+    </div>
+    <div class="about-copy">
+      <p>我的思维可能比较发散，经常会冒出一些稀奇古怪的点子。很多时候这些想法只是图一乐，不一定真的能做出什么成果。也正因为想法太多，有时我会不太容易集中注意力，这大概也是我一直在和自己拉扯的地方。</p>
+      <p>曾经我也想认真学习二进制方向，但因为自己的懈怠和拖延，错过了不少机会。回头看，大一大二确实被我挥霍掉了很多时间。现在再想这些多少有点遗憾，不过也没必要一直困在过去。对我来说，现在更像是一次重新出发。</p>
+    </div>
+  </section>
+
+  <section class="now-section" aria-labelledby="now-title">
+    <div>
+      <p class="eyebrow">02 / NOW</p>
+      <h2 id="now-title">正在学，也正在走。</h2>
+    </div>
+    <div class="now-list" aria-label="正在学习">
+      <span>learn rust</span>
+      <span>learn ai</span>
+      <span>learn os</span>
+    </div>
+    <blockquote>Be peace and Be water.</blockquote>
+  </section>
+
+  <section class="about-story about-life" aria-label="生活与兴趣">
+    <div class="about-sticky-label">
+      <span>03</span>
+      <strong>生活一点</strong>
+    </div>
+    <div class="about-copy">
+      <p>生活方面，爱好是吃吃吃、玩游戏、分享自己觉得有趣的事，也喜欢和有意思的人交朋友。目前玩得比较多的游戏是 osu! 和逃离塔科夫。</p>
+      <div class="profile-links">
+        <a href="https://osu.ppy.sh/users/25575122" target="_blank" rel="noreferrer">
+          <span>OSU!</span>
+          <strong>我的 osu! 主页</strong>
+          <b aria-hidden="true">↗</b>
+        </a>
+        <a href="https://steamcommunity.com/profiles/76561199074520025/" target="_blank" rel="noreferrer">
+          <span>STEAM</span>
+          <strong>我的 Steam 主页</strong>
+          <b aria-hidden="true">↗</b>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="about-closing">
+    <p>这个博客大概会记录一些学习过程、折腾笔记、技术碎片，以及自己的胡言乱语奇思妙想。</p>
+    <blockquote>“回头看来，也是闪耀的珍珠。”</blockquote>
+  </section>
+</BaseLayout>

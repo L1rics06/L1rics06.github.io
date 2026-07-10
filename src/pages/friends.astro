@@ -1,0 +1,43 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const friends = [
+  {
+    name: "S0ras",
+    url: "https://huaananan.github.io/S0ras/",
+    label: "huaananan.github.io/S0ras",
+    accent: "#7c5cff",
+  },
+  {
+    name: "Solaris Philosophy",
+    url: "https://lucypanco.github.io/SolarisPhilosophy.github.io/",
+    label: "lucypanco.github.io/SolarisPhilosophy.github.io",
+    accent: "#f97352",
+  },
+];
+---
+
+<BaseLayout title="友链" description="L1rics 的朋友们与他们的线上角落。">
+  <section class="friends-hero">
+    <p class="eyebrow">FRIENDS / LINKS</p>
+    <h1>朋友们的<br /><em>线上角落。</em></h1>
+    <p>一些值得停下来逛逛的个人站点。愿我们都能保持表达、保持好奇。</p>
+  </section>
+
+  <section class="friend-grid" aria-label="友情链接">
+    {friends.map((friend, index) => (
+      <a class="friend-card" href={friend.url} target="_blank" rel="noreferrer" style={`--friend-accent: ${friend.accent}`}>
+        <div class="friend-card-top">
+          <span>0{index + 1}</span>
+          <b aria-hidden="true">↗</b>
+        </div>
+        <strong>{friend.name}</strong>
+        <small>{friend.label}</small>
+      </a>
+    ))}
+  </section>
+
+  <section class="friends-note">
+    <p>想交换友链，欢迎在<a href="/guestbook/">留言板</a>留下你的站点。</p>
+  </section>
+</BaseLayout>

@@ -23,8 +23,11 @@ const cover = getPostCover(post);
     </div>
     <h2><a href={getPostUrl(post)}>{post.data.title}</a></h2>
     <p>{post.data.description}</p>
-    <div class="tag-row">
-      {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+    <div class="post-card-footer">
+      <div class="tag-row">
+        {post.data.tags.map((tag) => <a href={`/tags/${encodeURIComponent(tag)}/`}>{tag}</a>)}
+      </div>
+      <a class="read-more" href={getPostUrl(post)} aria-label={`阅读：${post.data.title}`}>阅读 <span aria-hidden="true">→</span></a>
     </div>
   </div>
 </article>

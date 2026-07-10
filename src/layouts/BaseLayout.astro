@@ -17,6 +17,15 @@ const {
 
 const pageTitle = title === site.title ? site.title : `${title} | ${site.title}`;
 const canonical = new URL(Astro.url.pathname, site.url).toString();
+const currentPath = Astro.url.pathname;
+const navItems = [
+  { href: "/", label: "首页" },
+  { href: "/about/", label: "关于" },
+  { href: "/friends/", label: "友链" },
+  { href: "/archive/", label: "归档" },
+  { href: "/tags/", label: "标签" },
+  { href: "/guestbook/", label: "留言" },
+];
 ---
 
 <!doctype html>
@@ -42,6 +51,7 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
     </script>
   </head>
   <body>
+    <div class="scroll-progress" aria-hidden="true"><span></span></div>
     <div class="site-shell">
       <header class="site-header">
         <a class="brand" href="/" aria-label="首页">
@@ -52,16 +62,14 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
           </span>
         </a>
         <nav class="site-nav" aria-label="主导航">
-          <a href="/">首页</a>
-          <a href="/" title="关于页施工中">关于</a>
-          <a href="/" title="友情链施工中">友情链</a>
-          <a href="/guestbook/">留言</a>
-          <a href="/tags/">标签</a>
-          <a href="/archive/">归档</a>
-          <a href="/rss.xml">RSS</a>
+          {navItems.map((item) => {
+            const isActive = item.href === "/" ? currentPath === "/" : currentPath.startsWith(item.href);
+            return <a href={item.href} aria-current={isActive ? "page" : undefined}>{item.label}</a>;
+          })}
+          <a class="nav-external" href="/rss.xml">RSS</a>
           <a href={site.githubUrl} target="_blank" rel="noreferrer">GitHub</a>
-          <button class="theme-toggle" type="button" aria-label="切换主题" title="切换主题">
-            <span aria-hidden="true">◐</span>
+          <button class="theme-toggle" type="button" aria-label="切换至深色主题" title="切换主题">
+            <span class="theme-toggle-icon" aria-hidden="true">☾</span>
           </button>
         </nav>
       </header>
@@ -71,18 +79,44 @@ const canonical = new URL(Astro.url.pathname, site.url).toString();
       <footer class="site-footer">
         <div class="footer-meta">
           <span>Copyright © {new Date().getFullYear()} {site.author}</span>
-          <span>Powered by Astro</span>
+          <span>Built with Astro</span>
         </div>
+        <a href="/rss.xml">订阅 RSS</a>
       </footer>
     </div>
-    <script is:inline async src="https://events.vercount.one/js"></script>
     <script>
       const button = document.querySelector<HTMLButtonElement>(".theme-toggle");
+      const icon = document.querySelector<HTMLElement>(".theme-toggle-icon");
+      const progress = document.querySelector<HTMLElement>(".scroll-progress span");
+
+      function refreshThemeButton() {
+        const isDark = document.documentElement.dataset.theme === "dark";
+        button?.setAttribute("aria-label", isDark ? "切换至浅色主题" : "切换至深色主题");
+        if (icon) icon.textContent = isDark ? "☀" : "☾";
+      }
+
       button?.addEventListener("click", () => {
         const next = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
         document.documentElement.dataset.theme = next;
         localStorage.setItem("theme", next);
+        refreshThemeButton();
       });
+
+      let scrollFrame = 0;
+      function updateScrollProgress() {
+        scrollFrame = 0;
+        if (!progress) return;
+        const scrollable = document.documentElement.scrollHeight - window.innerHeight;
+        const ratio = scrollable > 0 ? Math.min(window.scrollY / scrollable, 1) : 0;
+        progress.style.transform = `scaleX(${ratio})`;
+      }
+
+      window.addEventListener("scroll", () => {
+        if (!scrollFrame) scrollFrame = window.requestAnimationFrame(updateScrollProgress);
+      }, { passive: true });
+      window.addEventListener("resize", updateScrollProgress, { passive: true });
+      refreshThemeButton();
+      updateScrollProgress();
     </script>
   </body>
 </html>

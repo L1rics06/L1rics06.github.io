@@ -15,6 +15,9 @@ const latestPost = posts[0];
 const latestStats = latestPost ? getReadingStats(latestPost.body ?? "") : undefined;
 const totalWords = posts.reduce((total, post) => total + getReadingStats(post.body ?? "").words, 0);
 const filterTags = tags.slice(0, 8);
+const startYearMonth = new Intl.DateTimeFormat("zh-CN", { year: "numeric", month: "2-digit" })
+  .format(new Date(`${site.startDate}T00:00:00`))
+  .replace("/", ".");
 ---
 
 <BaseLayout title={site.title} description={site.description}>
@@ -32,12 +35,10 @@ const filterTags = tags.slice(0, 8);
             <span>字数</span>
             <strong>{totalWords.toLocaleString("zh-CN")}</strong>
           </div>
-          <div class="overview-stat">
-            <span>访问量</span>
-            <strong id="busuanzi_container_site_pv">
-              <span id="busuanzi_value_site_pv">--</span>
-            </strong>
-          </div>
+          <a class="overview-stat" href="/about/">
+            <span>开始记录</span>
+            <strong>{startYearMonth}</strong>
+          </a>
         </div>
       </div>
       {latestPost && latestStats && (
@@ -55,6 +56,21 @@ const filterTags = tags.slice(0, 8);
         </a>
       )}
     </div>
+  </section>
+
+  <section class="home-links" aria-label="站点入口">
+    <a class="home-link-card" href="/about/">
+      <span>01 / ABOUT</span>
+      <strong>认识一下</strong>
+      <p>网安学生、折腾爱好者，以及正在重新出发的人。</p>
+      <b aria-hidden="true">↗</b>
+    </a>
+    <a class="home-link-card" href="/friends/">
+      <span>02 / FRIENDS</span>
+      <strong>朋友们的角落</strong>
+      <p>去看看同样在认真记录、表达与折腾的人。</p>
+      <b aria-hidden="true">↗</b>
+    </a>
   </section>
 
   <section aria-labelledby="latest-posts">
@@ -101,6 +117,7 @@ const filterTags = tags.slice(0, 8);
     const items = [...document.querySelectorAll<HTMLElement>(".post-list-item")];
     const empty = document.querySelector<HTMLElement>("#post-empty");
     let activeTag = "";
+    let filterFrame = 0;
 
     function applyFilters() {
       const query = search?.value.trim().toLowerCase() ?? "";
@@ -123,12 +140,20 @@ const filterTags = tags.slice(0, 8);
       if (empty) empty.hidden = visible > 0;
     }
 
-    search?.addEventListener("input", applyFilters);
+    function scheduleFilters() {
+      if (filterFrame) window.cancelAnimationFrame(filterFrame);
+      filterFrame = window.requestAnimationFrame(() => {
+        filterFrame = 0;
+        applyFilters();
+      });
+    }
+
+    search?.addEventListener("input", scheduleFilters);
     chips.forEach((chip) => {
       chip.addEventListener("click", () => {
         activeTag = chip.dataset.tag?.toLowerCase() ?? "";
         chips.forEach((item) => item.setAttribute("aria-pressed", String(item === chip)));
-        applyFilters();
+        scheduleFilters();
       });
     });
   </script>

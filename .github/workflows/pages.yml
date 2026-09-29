@@ -1,4 +1,4 @@
-name: Deploy Astro site
+name: Build and Deploy Hexo site
 
 on:
   push:
@@ -32,18 +32,15 @@ jobs:
         uses: actions/configure-pages@v5
 
       - name: Install dependencies
-        run: npm ci
+        run: npm install
 
-      - name: Check
-        run: npm run check
-
-      - name: Build
-        run: npm run build
+      - name: Build with Hexo
+        run: npx hexo generate
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist
+          path: public
 
   deploy:
     name: Deploy

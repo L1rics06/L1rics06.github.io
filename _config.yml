@@ -1,0 +1,122 @@
+# Hexo Configuration
+# Docs: https://hexo.io/docs/configuration.html
+
+# Site
+title: L1rics的blog
+subtitle: 沉淀
+description: 技术学习、工程实践和日常折腾记录。
+keywords:
+author: L1rics
+language: zh-CN
+timezone: Asia/Shanghai
+
+# URL
+url: https://l1rics06.github.io
+permalink: posts/:title/
+permalink_defaults:
+
+# Directory
+source_dir: source
+public_dir: public
+tag_dir: tags
+archive_dir: archive
+category_dir: categories
+code_dir: downloads/code
+i18n_dir: :lang
+skip_render:
+  - post/**/*.html
+  - tag.html
+
+# Writing
+new_post_name: :title.md
+default_layout: post
+titlecase: false
+external_link:
+  enable: true
+  field: site
+  exclude: ''
+filename_case: 0
+render_drafts: false
+post_asset_folder: false
+relative_link: false
+future: true
+
+# Code highlight (highlight.js, Suka 主题内置 github 配色)
+syntax_highlighter: highlight.js
+highlight:
+  enable: true
+  line_number: false
+  auto_detect: false
+  tab_replace: ''
+  exclude_languages: []
+prismjs:
+  enable: false
+  preprocess: true
+  line_number: false
+  tab_replace: ''
+
+# Home page pagination
+index_generator:
+  path: ''
+  per_page: 10
+  order_by: -date
+
+# Category & Tag
+default_category: uncategorized
+category_map:
+tag_map:
+
+# Metadata elements
+meta_generator: true
+
+# Date / Time format
+date_format: YYYY-MM-DD
+time_format: HH:mm:ss
+# CI 环境中文件 mtime 不可靠，updated 一律取发布日期
+updated_option: date
+
+# Pagination
+per_page: 10
+pagination_dir: page
+
+# Feed (RSS)
+feed:
+  type: atom
+  path: rss.xml
+  limit: 20
+  content: false
+  content_description: false
+
+# Sitemap
+sitemap:
+  path: sitemap.xml
+
+# Include / Exclude file(s)
+include:
+exclude:
+ignore:
+
+# Extensions
+theme: suka
+
+# Markdown 渲染（markdown-it + KaTeX 数学公式）
+markdown:
+  render:
+    html: true
+    xhtmlOut: false
+    breaks: false
+    linkify: true
+    typographer: false
+  plugins:
+    - 'markdown-it-katex'
+
+# Suka Theme 站点级配置（必须保留，主题脚本会读取）
+suka_theme:
+  search:
+    enable: true
+    path: search.json
+    field: post # Page | Post | All. Default post
+  prism:
+    enable: false
+    line_number: true
+    theme: default

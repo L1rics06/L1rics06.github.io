@@ -1,0 +1,7 @@
+# 站点级自定义 <head> 注入（Suka 主题原生支持 site.data.head）
+# Cloudflare Web Analytics
+cf_beacon: >-
+  <script defer type="module" src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "593b839863e34392bde2d7672f35293d"}' crossorigin="anonymous"></script>
+# KaTeX 样式（公式由 markdown-it-katex 服务端渲染）
+katex_css: >-
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">

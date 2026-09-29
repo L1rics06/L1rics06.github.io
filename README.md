@@ -1,246 +1,80 @@
-# L1rics 的 blog
+# L1rics的blog
 
-Astro 静态技术博客，部署到 <https://l1rics06.github.io/>。
+基于 [Hexo](https://hexo.io/) + [Suka 主题](https://github.com/SukkaW/hexo-theme-suka) 的个人博客，部署在 GitHub Pages：https://l1rics06.github.io
 
-## 本地开发
+## 怎么发文章 / 改文章
 
-第一次拉取项目后安装依赖：
+1. 新建一篇文章（会在 `source/_posts/` 生成 markdown 文件）：
 
-```bash
-npm install
+   ```bash
+   npx hexo new post "文章标题"
+   ```
+
+   或者直接在 `source/_posts/` 里手动新建一个 `.md` 文件。
+
+2. 编辑 markdown，头部格式：
+
+   ```yaml
+   ---
+   title: 文章标题
+   description: 一句话摘要（会显示在首页卡片和 SEO）
+   date: 2026-09-29
+   tags:
+     - 标签A
+   ---
+
+   正文从这里开始……
+   ```
+
+3. 本地预览：
+
+   ```bash
+   npx hexo server
+   ```
+
+   打开 http://localhost:4000 看效果。
+
+4. push 上线：
+
+   ```bash
+   git add . && git commit -m "Add post:文章标题" && git push
+   ```
+
+   push 到 `main` 后 GitHub Actions 会自动构建并部署，约 1-2 分钟生效。
+
+## 常用操作
+
+- 删文章：删除 `source/_posts/` 里对应的 `.md` 文件，push。
+- 改友链：编辑 `source/_data/links.yml`。
+- 改菜单/站点信息：编辑站点根目录 `_config.yml`（站点信息）和 `themes/suka/_config.yml`（菜单、评论等）。
+- 数学公式：行内 `$...$`，独立成行 `$$...$$`（`$$` 和公式写在同一行）。
+- 代码块：```` ```bash ```` 等常规 fenced code 即可。
+
+## 目录结构
+
+```
+├── _config.yml            # 站点配置（标题、URL、永久链接、RSS 等）
+├── source/
+│   ├── _posts/            # ★ 所有文章（markdown）
+│   ├── _data/head.yml     # 注入 <head> 的内容（Cloudflare 统计、KaTeX 样式）
+│   ├── _data/links.yml    # 友链数据
+│   ├── about/ links/ guestbook/ search/ tags/   # 独立页面
+│   ├── images/            # 文章配图
+│   ├── post/、tag.html    # Gmeek 时代旧链接的跳转页
+│   └── 404.html
+├── themes/suka/           # 主题（含少量本地补丁，见下）
+└── .github/workflows/pages.yml   # push 自动构建部署
 ```
 
-启动本地预览：
+## 对 Suka 主题做过的本地修改
 
-```bash
-npm run dev
-```
+主题原版较老（v1.3.3），为兼容 Hexo 7 打了几个小补丁：
 
-默认访问地址是 <http://127.0.0.1:4321/>。如果端口被占用，可以看终端输出里的实际地址。
+1. `themes/suka/includes/**`、`scripts/index.js`：`hexo-log` 新版 API 兼容。
+2. `themes/suka/layout/_plugin/comment/utterances/`：新增 Utterances 评论支持（原版没有）。
+3. `themes/suka/layout/_partial/post-entry-content.ejs`：首页摘要优先使用文章的 `description`。
+4. `themes/suka/layout/_pages/links.ejs`：友链页支持显示页面正文。
 
-提交前建议跑一遍检查和构建：
+## 环境要求
 
-```bash
-npm run check
-npm run build
-```
-
-## 目录说明
-
-- `src/content/posts/`：所有博客文章，Markdown 格式。
-- `public/covers/`：自定义文章封面图，文章 frontmatter 里用 `/covers/xxx.png` 引用。
-- `public/images/`：文章正文图片，建议按文章名建子目录，例如 `/images/os-final-review/example.png`。
-- `src/site.config.ts`：站点标题、作者、头像、GitHub 地址等配置。
-- `src/components/`：文章卡片、评论、目录等组件。
-- `src/pages/`：首页、归档、标签、留言板、文章详情等页面。
-
-## 写一篇新文章
-
-1. 在 `src/content/posts/` 下新建一个 `.md` 文件。
-2. 文件名会成为文章 URL，建议使用英文、小写和连字符。
-3. 如果需要自定义封面，把封面图放到 `public/covers/`。
-4. 在 Markdown 顶部写 frontmatter。
-5. 正文按普通 Markdown 写即可。
-
-例如新建：
-
-```text
-src/content/posts/rust-ownership-notes.md
-public/covers/rust-ownership-notes.png
-```
-
-文章 URL 会是：
-
-```text
-/posts/rust-ownership-notes/
-```
-
-推荐模板：
-
-```md
----
-title: "文章标题"
-description: "一句话摘要，会显示在首页、文章页和 RSS 里。"
-date: 2026-06-30
-tags:
-  - Rust
-  - 笔记
-cover: "/covers/rust-ownership-notes.png" # 可选；不填时自动使用正文第一张图
-series: "RUST篇"
-draft: true
----
-
-## 开头
-
-这里写正文。
-```
-
-## Frontmatter 字段
-
-`title`：必填。文章标题。
-
-`description`：必填。一句话摘要，首页卡片、文章页头部和 RSS 都会用到。
-
-`date`：必填。发布日期，格式建议写成 `YYYY-MM-DD`。首页和归档会按这个日期倒序排列。
-
-`tags`：可填多个标签。标签会用于首页筛选和 `/tags/` 页面。
-
-`cover`：可选。文章自定义封面路径。图片放在 `public/covers/` 时，路径写 `/covers/文件名`。如果不填，站点会自动使用正文里的第一张 Markdown 图片或 HTML `<img>` 图片作为封面；如果正文也没有图片，则使用站点头像兜底。
-
-`series`：必填。文章所属系列，会显示在文章元信息里，也用于首页统计当前更新最多的系列。
-
-`draft`：建议新文章先写 `true`。`draft: true` 不会发布；确认完成后改成 `false`。
-
-`day`：旧字段，可选。当前页面不会展示 Day 标签，新文章不需要填写。
-
-`legacyUrl`：旧文章迁移字段，可选。只有迁移旧链接时才需要。
-
-## 正文图片
-
-正文图片建议放到 `public/images/文章名/`：
-
-```text
-public/images/rust-ownership-notes/borrow-flow.png
-```
-
-在 Markdown 里这样引用：
-
-```md
-![借用流程](/images/rust-ownership-notes/borrow-flow.png)
-```
-
-不要用相对路径，例如 `./borrow-flow.png`，静态站点部署后容易失效。
-
-## 本地检查文章
-
-写完后先启动本地服务：
-
-```bash
-npm run dev
-```
-
-重点检查：
-
-- 首页文章卡片是否正常显示。
-- 文章详情页标题、摘要、封面是否正常。
-- 标签是否出现在筛选栏和标签页。
-- 正文图片是否能加载。
-- 评论区是否出现在文章底部。
-
-然后运行：
-
-```bash
-npm run check
-npm run build
-```
-
-`npm run check` 负责 Astro 类型和内容校验。`npm run build` 负责确认静态页面能完整生成。
-
-## 提交并发布文章
-
-确认文章可以发布后，把 frontmatter 改成：
-
-```yaml
-draft: false
-```
-
-然后提交：
-
-```bash
-git status
-git add src/content/posts/文章文件名.md
-git add public/covers/封面文件名.png
-git commit -m "Add post: 文章标题"
-git push origin main
-```
-
-如果没有自定义封面，就不用添加 `public/covers/封面文件名.png`。
-
-推送到 `main` 后，GitHub Actions 会自动执行：
-
-1. `npm ci`
-2. `npm run check`
-3. `npm run build`
-4. 部署到 GitHub Pages
-
-工作流文件在 `.github/workflows/pages.yml`。部署完成后，文章会出现在 <https://l1rics06.github.io/>。
-
-## 修改已有文章
-
-修改文章时，直接编辑对应的 Markdown 文件：
-
-```text
-src/content/posts/文章文件名.md
-```
-
-常见修改：
-
-- 改标题：修改 `title`。
-- 改摘要：修改 `description`。
-- 改发布日期：修改 `date`。注意这会影响首页和归档排序。
-- 改标签：修改 `tags`。
-- 改封面：把新图放到 `public/covers/`，再修改 `cover`；如果想改为自动封面，就删掉 `cover` 字段，并确保正文第一张图是想要的封面。
-- 改正文：直接修改 frontmatter 下面的 Markdown 内容。
-
-修改后本地验证：
-
-```bash
-npm run check
-npm run build
-```
-
-提交修改：
-
-```bash
-git status
-git add src/content/posts/文章文件名.md
-git add public/covers/新封面.png
-git commit -m "Update post: 文章标题"
-git push origin main
-```
-
-如果只是改正文，没有新增图片，只需要 `git add` 对应的 Markdown 文件。
-
-## 草稿流程
-
-还没写完的文章可以先保留在仓库里，但不要发布：
-
-```yaml
-draft: true
-```
-
-草稿不会出现在首页、归档、标签页和 RSS 中。等文章完成后改为：
-
-```yaml
-draft: false
-```
-
-再提交到 `main`。
-
-## 常见问题
-
-如果文章没有出现在首页：
-
-- 检查文件是否放在 `src/content/posts/`。
-- 检查文件扩展名是否是 `.md`。
-- 检查 `draft` 是否为 `false`。
-- 检查 `date` 是否格式正确。
-- 运行 `npm run check` 看 frontmatter 是否有字段错误。
-
-如果封面或正文图片不显示：
-
-- 检查图片是否放在 `public/` 目录下。
-- 检查路径是否以 `/` 开头。
-- 检查文件名大小写是否一致。
-
-如果部署后页面没更新：
-
-- 到 GitHub 仓库的 Actions 页面查看 Pages 工作流是否通过。
-- 确认改动已经推送到 `main`。
-- 等待 GitHub Pages 缓存刷新几分钟。
-
-如果评论区不可用：
-
-- 确认仓库开启了 Issues。
-- 确认安装了 Utterances GitHub App。
-- 评论数据会存到 `L1rics06/L1rics06.github.io` 仓库的 Issues。
+Node.js 22（与 CI 一致）。首次使用：`npm install`。

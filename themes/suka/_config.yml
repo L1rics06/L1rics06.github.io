@@ -1,0 +1,174 @@
+# ---------------------------------------------------------------
+# Suka Theme Configuration
+# ---------------------------------------------------------------
+
+# Site Information Settings
+head:
+  favicon:
+    ico: /img/suka-favicon.ico
+    small:
+    medium:
+    apple_touch_icon:
+    large:
+    safari_pinned_tab:
+  color:
+  pwa_manifest:
+  open_search:
+  keywords:
+  site_verification:
+    google:
+    baidu:
+
+footer:
+  copyright_since: 2026
+  custom_text:
+
+# Customize Settings
+uiux:
+  slogan: 沉淀
+  link_color:
+  primary_color:
+  bg_color:
+
+img:
+  avatar: 'https://avatars.githubusercontent.com/u/202309426?v=4'
+
+# Menu Settings
+nav:
+  home:
+    use: true
+  archives:
+    use: true
+  rss:
+    use: true
+  share:
+    use: false
+  search:
+    use: true
+    link: /search
+  pages:
+    关于:
+      link: /about/
+    友链:
+      link: /friends/
+    留言:
+      link: /guestbook/
+
+sns_share:
+  weibo: false
+  facebook: false
+  twitter: false
+  telegram: false
+  googleplus: false
+  linkedin: false
+  qq: false
+
+qrcode:
+  index_share: false
+  post_share: false
+
+# Post Settings
+post:
+  entry_excerpt: 120
+  expire: false
+  share: false
+  license:
+
+toc:
+  enable: true
+  line_number: false
+
+# Comment Systems（utterances 模板由本仓库自行补充，位于
+# layout/_plugin/comment/utterances/main.ejs）
+comment:
+  use: utterances
+  utterances:
+    repo: L1rics06/L1rics06.github.io
+    # issue-term: pathname | url | title | og:title
+    issue_term: pathname
+    # theme: github-light | github-dark | preferred-color-scheme | ...
+    theme: preferred-color-scheme
+
+# Site Analytics（Cloudflare Web Analytics 通过 source/_data/head.yml 注入）
+analytics:
+  google_site_id:
+  gtags_site_id:
+  baidu_site_id:
+  cnzz_site_id:
+  tencent_site_id:
+  tencent_mta_id:
+
+# Busuanzi（不使用，保持极简）
+busuanzi:
+  enable: false
+  site_uv:
+    enable: false
+    before:
+    after: Viewers
+    divider: '|'
+    offset: 0
+  site_pv:
+    enable: false
+    before:
+    after: Views
+    divider:
+    offset: 0
+  post_pv:
+    enable: false
+    before:
+    after: Views
+
+valine_counter:
+  enable: false
+  site_pv:
+    enable: false
+    before:
+    after:
+    divider:
+  index_post_pv:
+    enable: false
+    before:
+    after:
+  post_pv:
+    enable: false
+    before:
+    after:
+
+# Plugin Settings
+search:
+  use: local
+  swiftype_key:
+
+# Code highlight（Hexo 内置 highlight.js + Suka 的 github 配色）
+highlight:
+  theme: github
+
+hanabi:
+  enable: false
+
+prettify:
+  enable: false
+  linenumber: true
+  theme:
+
+# Expert Settings
+vendors:
+  suka:
+    style_css:
+    local_search_js:
+    hanabi_browser_js:
+    highlight_theme:
+  lazyload_img:
+  spectre:
+    spectre_css:
+  prism:
+    theme:
+    line_number:
+  lazyload:
+  busuanzi:
+  hanabi:
+  prettify:
+  prettify_theme:
+
+fragment_cache: false
+verison: 1.3.3

@@ -15,6 +15,8 @@ require('../includes/helpers/page')(hexo);
 require('../includes/helpers/tags')(hexo);
 require('../includes/helpers/favicon')(hexo);
 require('../includes/helpers/qrcode')(hexo);
+// 覆盖内置 toc()：修复标题层级先高后低时目录 <ol> 提前闭合、溢出到文章开头的问题
+require('../includes/helpers/toc')(hexo);
 
 // Generator
 require('../includes/generator/search')(hexo);

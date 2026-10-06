@@ -5,3 +5,16 @@ cf_beacon: >-
 # KaTeX 样式（公式由 markdown-it-katex 服务端渲染）
 katex_css: >-
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css" integrity="sha384-nB0miv6/jRmo5UMMR1wu3Gz6NLsoTkbqJghGIsx//Rlm+ZU03BU6SQNC66uf4l5+" crossorigin="anonymous">
+# 文章目录（TOC）样式修复：fixed 定位原本无高度限制，长目录会溢出视口底部
+# 且无法滚动查看；限制最大高度并允许目录内部滚动
+toc_style: >-
+  <style>
+    #post-toc > ol {
+      max-height: calc(100vh - 15rem);
+      overflow-y: auto;
+      overflow-x: hidden;
+      overscroll-behavior: contain;
+      overflow-wrap: anywhere;
+      scrollbar-width: thin;
+    }
+  </style>

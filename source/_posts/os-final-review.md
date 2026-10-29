@@ -6,6 +6,8 @@ tags:
   - 操作系统
   - OS
   - 复习
+  # Utterances 旧评论存在 Issue「posts/os-final-review/」里，与 pathname 差一个开头斜杠，显式指定以找回旧评论
+comment_issue_term: posts/os-final-review/
 ---
 ## 1. 第二章：操作系统概述
 

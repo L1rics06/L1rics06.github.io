@@ -5,6 +5,8 @@ date: 2026-05-28
 tags:
   - OS
   - Nachos
+  # Utterances 旧评论存在 Issue「posts/nachos-memory-management-process-lifecycle/」里，与 pathname 差一个开头斜杠，显式指定以找回旧评论
+comment_issue_term: posts/nachos-memory-management-process-lifecycle/
 ---
 
 nachos 本质是模拟架构的 `mips` 最简单系统内核
